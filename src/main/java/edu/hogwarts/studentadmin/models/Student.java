@@ -37,6 +37,17 @@ public class Student {
     public Student() {
     }
 
+    public void copyFrom(Student otherStudent) {
+        this.setFirstName(otherStudent.getFirstName());
+        this.setMiddleName(otherStudent.getMiddleName());
+        this.setLastName(otherStudent.getLastName());
+        this.setDateOfBirth(otherStudent.getDateOfBirth());
+        this.setPrefect(otherStudent.isPrefect());
+        this.setEnrollmentYear(otherStudent.getEnrollmentYear());
+        this.setGraduationYear(otherStudent.getGraduationYear());
+        this.setGraduated(otherStudent.isGraduated());
+    }
+
     public String getFirstName() {
         return firstName;
     }

@@ -3,6 +3,7 @@ package edu.hogwarts.studentadmin.controllers;
 import edu.hogwarts.studentadmin.models.Student;
 import edu.hogwarts.studentadmin.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,25 +41,29 @@ public class StudentController {
     }
 
     @PutMapping("/students/{id}")
-    public ResponseEntity<Student> updateStudents(@PathVariable int id, @RequestBody Student student) {
+    public ResponseEntity<Student> updateStudent(@PathVariable int id, @RequestBody Student student) {
         Optional<Student> original = studentRepository.findById(id);
 
         if (original.isPresent()) {
             Student originalStudent = original.get();
-            originalStudent.setFirstName(student.getFirstName());
-            originalStudent.setMiddleName(student.getMiddleName());
-            originalStudent.setLastName(student.getLastName());
-            originalStudent.setDateOfBirth(student.getDateOfBirth());
-            originalStudent.setPrefect(student.isPrefect());
-            originalStudent.setEnrollmentYear(student.getEnrollmentYear());
-            originalStudent.setGraduationYear(student.getGraduationYear());
-            originalStudent.setGraduated(student.isGraduated());
+            originalStudent.copyFrom(student);
 
             Student updatedStudent = studentRepository.save(originalStudent);
             return ResponseEntity.ok().body(updatedStudent);
         } else {
-            return ResponseEntity.notFound().build();
+            Student newStudent = new Student();
+            newStudent.copyFrom(student);
+
+            Student savedStudent = studentRepository.save(newStudent);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedStudent);
         }
+    }
+
+    @DeleteMapping("/students/{id}")
+    public ResponseEntity<Student> deleteStudent(@PathVariable int id) {
+        Optional<Student> studentToDelete = studentRepository.findById(id);
+        studentRepository.deleteById(id);
+        return ResponseEntity.of(studentToDelete);
     }
 
 
