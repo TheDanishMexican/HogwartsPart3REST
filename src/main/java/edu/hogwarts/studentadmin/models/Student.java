@@ -37,6 +37,17 @@ public class Student {
     public Student() {
     }
 
+    public Student(Student otherStudent) {
+        this.firstName = otherStudent.getFirstName();
+        this.middleName = otherStudent.getMiddleName();
+        this.lastName = otherStudent.getLastName();
+        this.dateOfBirth = otherStudent.getDateOfBirth();
+        this.prefect = otherStudent.isPrefect();
+        this.enrollmentYear = otherStudent.getEnrollmentYear();
+        this.graduationYear = otherStudent.getGraduationYear();
+        this.graduated = otherStudent.isGraduated();
+    }
+
     public void copyFrom(Student otherStudent) {
         this.setFirstName(otherStudent.getFirstName());
         this.setMiddleName(otherStudent.getMiddleName());
@@ -110,5 +121,13 @@ public class Student {
 
     public void setGraduated(boolean graduated) {
         this.graduated = graduated;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
