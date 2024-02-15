@@ -46,6 +46,18 @@ public class Teacher {
         this.employmentEnd = otherTeacher.getEmploymentEnd();
     }
 
+    public void copyFrom(Teacher otherTeacher) {
+        this.setFirstName(otherTeacher.getFirstName());
+        this.setMiddleName(otherTeacher.getMiddleName());
+        this.setLastName(otherTeacher.getLastName());
+        this.setDateOfBirth(otherTeacher.getDateOfBirth());
+        this.setHeadOfHouse(otherTeacher.isHeadOfHouse());
+        this.setEmploymentType(otherTeacher.getEmploymentType());
+        this.setEmploymentStart(otherTeacher.getEmploymentStart());
+        this.setEmploymentEnd(otherTeacher.getEmploymentEnd());
+    }
+
+
     public String getFirstName() {
         return firstName;
     }
