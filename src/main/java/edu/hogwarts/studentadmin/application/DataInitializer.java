@@ -1,4 +1,4 @@
 package edu.hogwarts.studentadmin.application;
 
-public class InitializeData {
+public class DataInitializer {
 }
