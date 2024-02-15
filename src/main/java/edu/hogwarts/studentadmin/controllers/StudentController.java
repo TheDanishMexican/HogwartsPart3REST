@@ -63,6 +63,7 @@ public class StudentController {
     public ResponseEntity<Student> deleteStudent(@PathVariable int id) {
         Optional<Student> studentToDelete = studentRepository.findById(id);
         studentRepository.deleteById(id);
+
         return ResponseEntity.of(studentToDelete);
     }
 
