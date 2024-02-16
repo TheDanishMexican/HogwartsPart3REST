@@ -48,6 +48,7 @@ public class Teacher {
         this.employmentType = otherTeacher.getEmploymentType();
         this.employmentStart = otherTeacher.getEmploymentStart();
         this.employmentEnd = otherTeacher.getEmploymentEnd();
+        this.house = otherTeacher.getHouse();
     }
 
     public void copyFrom(Teacher otherTeacher) {

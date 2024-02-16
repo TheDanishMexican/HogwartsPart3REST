@@ -4,6 +4,7 @@ import edu.hogwarts.studentadmin.models.Course;
 import edu.hogwarts.studentadmin.models.Student;
 import edu.hogwarts.studentadmin.models.Teacher;
 import edu.hogwarts.studentadmin.repositories.CourseRepository;
+import edu.hogwarts.studentadmin.repositories.TeacherRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,30 @@ import java.util.Optional;
 @RestController
 public class CourseController {
     private final CourseRepository courseRepository;
+    private final TeacherRepository teacherRepository;
 
-    public CourseController(CourseRepository courseRepository) {
+    public CourseController(CourseRepository courseRepository, TeacherRepository teacherRepository) {
         this.courseRepository = courseRepository;
+        this.teacherRepository = teacherRepository;
     }
+
+
+    @PutMapping("courses/{id}/teacher")
+    public ResponseEntity<Course> updateCourseTeacher(@PathVariable int id, @RequestBody Teacher teacher) {
+        Optional<Course> course = courseRepository.findById(id);
+
+        if (course.isPresent()) {
+            Course existingCourse = course.get();
+
+            existingCourse.setTeacher(teacher);
+
+            courseRepository.save(existingCourse);
+            return ResponseEntity.ok().body(existingCourse);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     @GetMapping("courses/{id}/students")
     public ResponseEntity<List<Student>> getCourseStudents(@PathVariable int id) {
