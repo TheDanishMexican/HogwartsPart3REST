@@ -10,7 +10,7 @@ public class House {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String founder;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<HouseColor> houseColors;
 
     public House() {
@@ -22,6 +22,11 @@ public class House {
     }
 
     public House(House otherHouse) {
+        this.founder = otherHouse.getFounder();
+        this.houseColors = otherHouse.getHouseColors();
+    }
+
+    public void copyFrom(House otherHouse) {
         this.setFounder(otherHouse.getFounder());
         this.setHouseColors(otherHouse.getHouseColors());
     }
