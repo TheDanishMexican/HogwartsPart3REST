@@ -12,7 +12,7 @@ public class Student {
     private String firstName;
     private String middleName;
     private String lastName;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private House house;
     private LocalDate dateOfBirth;
     private boolean prefect;
@@ -46,6 +46,7 @@ public class Student {
         this.enrollmentYear = otherStudent.getEnrollmentYear();
         this.graduationYear = otherStudent.getGraduationYear();
         this.graduated = otherStudent.isGraduated();
+        this.house = otherStudent.getHouse();
     }
 
     public void copyFrom(Student otherStudent) {
@@ -57,6 +58,7 @@ public class Student {
         this.setEnrollmentYear(otherStudent.getEnrollmentYear());
         this.setGraduationYear(otherStudent.getGraduationYear());
         this.setGraduated(otherStudent.isGraduated());
+        this.setHouse(otherStudent.getHouse());
     }
 
     public String getFirstName() {

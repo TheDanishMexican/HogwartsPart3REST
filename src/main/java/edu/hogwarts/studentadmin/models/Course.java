@@ -13,18 +13,21 @@ public class Course {
     private String subject;
     private int schoolYear;
     private boolean current;
-    @OneToMany
+    @OneToMany(cascade =  CascadeType.ALL)
     private List<Student> students;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Teacher teacher;
 
     public Course() {
     }
 
-    public Course(int id, String subject, int schoolYear, boolean current, List<Student> students) {
+    public Course(int id, Teacher teacher, String subject, int schoolYear, boolean current, List<Student> students) {
         this.id = id;
         this.subject = subject;
         this.schoolYear = schoolYear;
         this.current = current;
         this.students = students;
+        this.teacher = teacher;
     }
 
     public Course(Course otherCourse) {
@@ -33,6 +36,7 @@ public class Course {
         this.schoolYear = otherCourse.getSchoolYear();
         this.current = otherCourse.isCurrent();
         this.students = otherCourse.getStudents();
+        this.teacher = otherCourse.getTeacher();
     }
 
     public void copyFrom(Course otherCourse) {
@@ -40,6 +44,7 @@ public class Course {
         this.setSchoolYear(otherCourse.getSchoolYear());
         this.setCurrent(otherCourse.isCurrent());
         this.setStudents(otherCourse.getStudents());
+        this.setTeacher(otherCourse.getTeacher());
     }
 
     public int getId() {
@@ -80,5 +85,13 @@ public class Course {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 }

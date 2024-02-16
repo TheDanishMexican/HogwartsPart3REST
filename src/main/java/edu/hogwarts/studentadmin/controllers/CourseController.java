@@ -2,6 +2,7 @@ package edu.hogwarts.studentadmin.controllers;
 
 import edu.hogwarts.studentadmin.models.Course;
 import edu.hogwarts.studentadmin.models.Student;
+import edu.hogwarts.studentadmin.models.Teacher;
 import edu.hogwarts.studentadmin.repositories.CourseRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,32 @@ public class CourseController {
 
     public CourseController(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
+    }
+
+    @GetMapping("courses/{id}/students")
+    public ResponseEntity<List<Student>> getCourseStudents(@PathVariable int id) {
+        Optional<Course> optionalCourse = courseRepository.findById(id);
+
+        if (optionalCourse.isPresent()) {
+            List<Student> courseStudents = optionalCourse.get().getStudents();
+            return ResponseEntity.ok(courseStudents);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @GetMapping("courses/{id}/teacher")
+    public ResponseEntity<Teacher> getCourseTeacher(@PathVariable int id) {
+        Optional<Course> course = courseRepository.findById(id);
+
+        if(course.isPresent()) {
+            Teacher teacher = course.get().getTeacher();
+
+            return ResponseEntity.ok().body(teacher);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/courses/{id}")
