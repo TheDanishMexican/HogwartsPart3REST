@@ -12,6 +12,8 @@ public class Teacher {
     private String firstName;
     private String middleName;
     private String lastName;
+    @ManyToOne
+    private House house;
     private LocalDate dateOfBirth;
     private boolean headOfHouse;
     @Enumerated(EnumType.STRING)
@@ -21,7 +23,8 @@ public class Teacher {
 
 
     public Teacher(String firstName, String middleName, String lastName, LocalDate dateOfBirth,
-                   boolean headOfHouse, EmploymentType employmentType, LocalDate employmentStart, LocalDate employmentEnd) {
+                   boolean headOfHouse, EmploymentType employmentType, LocalDate employmentStart,
+                   LocalDate employmentEnd, House house) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -30,6 +33,7 @@ public class Teacher {
         this.employmentType = employmentType;
         this.employmentStart = employmentStart;
         this.employmentEnd = employmentEnd;
+        this.house = house;
     }
 
     public Teacher() {
@@ -128,5 +132,13 @@ public class Teacher {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public House getHouse() {
+        return house;
+    }
+
+    public void setHouse(House house) {
+        this.house = house;
     }
 }
