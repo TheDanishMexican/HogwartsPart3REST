@@ -13,7 +13,7 @@ public class Course {
     private String subject;
     private int schoolYear;
     private boolean current;
-    @OneToMany
+    @ManyToMany
     private List<Student> students;
     @OneToOne
     private Teacher teacher;
@@ -21,8 +21,7 @@ public class Course {
     public Course() {
     }
 
-    public Course(int id, Teacher teacher, String subject, int schoolYear, boolean current, List<Student> students) {
-        this.id = id;
+    public Course(Teacher teacher, String subject, int schoolYear, boolean current, List<Student> students) {
         this.subject = subject;
         this.schoolYear = schoolYear;
         this.current = current;
