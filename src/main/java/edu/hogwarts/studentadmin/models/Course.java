@@ -13,12 +13,7 @@ public class Course {
     private String subject;
     private int schoolYear;
     private boolean current;
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(
-            name = "course_students",
-            joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id")
-    )
+    @OneToMany
     private List<Student> students;
     @OneToOne
     private Teacher teacher;

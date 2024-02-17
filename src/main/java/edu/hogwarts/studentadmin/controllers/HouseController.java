@@ -33,7 +33,7 @@ public class HouseController {
     }
 
     @PostMapping
-    public House createHouse(House house) {
+    public House createHouse(@RequestBody House house) {
         return houseRepository.save(house);
     }
 
@@ -53,5 +53,13 @@ public class HouseController {
             House savedHouse = houseRepository.save(newHouse);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedHouse);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<House> deleteHouse(@PathVariable int id) {
+        Optional<House> houseToDelete = houseRepository.findById(id);
+        houseRepository.deleteById(id);
+
+        return ResponseEntity.of(houseToDelete);
     }
 }

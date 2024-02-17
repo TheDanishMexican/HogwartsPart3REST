@@ -26,11 +26,13 @@ public class CourseController {
     @PutMapping("courses/{id}/teacher")
     public ResponseEntity<Course> updateCourseTeacher(@PathVariable int id, @RequestBody Teacher teacher) {
         Optional<Course> course = courseRepository.findById(id);
+        Optional<Teacher> newTeacher = teacherRepository.findById(teacher.getId());
 
-        if (course.isPresent()) {
+        if (course.isPresent() && newTeacher.isPresent()) {
             Course existingCourse = course.get();
+            Teacher existingTeacher = newTeacher.get();
 
-            existingCourse.setTeacher(teacher);
+            existingCourse.setTeacher(existingTeacher);
 
             courseRepository.save(existingCourse);
             return ResponseEntity.ok().body(existingCourse);
@@ -121,6 +123,11 @@ public class CourseController {
     @DeleteMapping("/courses/{id}")
     public ResponseEntity<Course> deleteCourse(@PathVariable int id) {
         Optional<Course> courseToDelete = courseRepository.findById(id);
+
+        if (courseToDelete.isPresent()) {
+            courseToDelete.get().getStudents().clear();
+        }
+
         courseRepository.deleteById(id);
 
         return ResponseEntity.of(courseToDelete);
