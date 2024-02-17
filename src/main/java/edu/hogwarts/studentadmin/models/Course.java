@@ -15,7 +15,7 @@ public class Course {
     private boolean current;
     @ManyToMany
     private List<Student> students;
-    @OneToOne
+    @ManyToOne
     private Teacher teacher;
 
     public Course() {
