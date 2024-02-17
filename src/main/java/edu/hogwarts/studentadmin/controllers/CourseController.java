@@ -4,6 +4,7 @@ import edu.hogwarts.studentadmin.models.Course;
 import edu.hogwarts.studentadmin.models.Student;
 import edu.hogwarts.studentadmin.models.Teacher;
 import edu.hogwarts.studentadmin.repositories.CourseRepository;
+import edu.hogwarts.studentadmin.repositories.StudentRepository;
 import edu.hogwarts.studentadmin.repositories.TeacherRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,13 @@ import java.util.Optional;
 public class CourseController {
     private final CourseRepository courseRepository;
     private final TeacherRepository teacherRepository;
+    private final StudentRepository studentRepository;
 
-    public CourseController(CourseRepository courseRepository, TeacherRepository teacherRepository) {
+    public CourseController(CourseRepository courseRepository, TeacherRepository teacherRepository,
+                            StudentRepository studentRepository) {
         this.courseRepository = courseRepository;
         this.teacherRepository = teacherRepository;
+        this.studentRepository = studentRepository;
     }
 
 
@@ -141,6 +145,24 @@ public class CourseController {
         if (teacherToDeleteFromCourse.isPresent() && courseToDeleteTeacherFrom.isPresent()) {
             Course existingCourse = courseToDeleteTeacherFrom.get();
             existingCourse.setTeacher(null);
+
+            courseRepository.save(existingCourse);
+            return ResponseEntity.ok().body(existingCourse);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("courses/{id}/students")
+    public ResponseEntity<Course> deleteStudentFromCourse(@PathVariable int id, @RequestBody Student student) {
+        Optional<Student> studentToDelete = studentRepository.findById(student.getId());
+        Optional<Course> courseToDeleteStudentFrom = courseRepository.findById(id);
+
+        if (studentToDelete.isPresent() && courseToDeleteStudentFrom.isPresent()) {
+            Course existingCourse = courseToDeleteStudentFrom.get();
+            Student existingStudent = studentToDelete.get();
+
+            existingCourse.getStudents().remove(existingStudent);
 
             courseRepository.save(existingCourse);
             return ResponseEntity.ok().body(existingCourse);

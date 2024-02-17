@@ -140,4 +140,9 @@ public class Student {
     public void setHouse(House house) {
         this.house = house;
     }
+
+    @Override
+    public String toString() {
+        return firstName + middleName + lastName + " ";
+    }
 }
