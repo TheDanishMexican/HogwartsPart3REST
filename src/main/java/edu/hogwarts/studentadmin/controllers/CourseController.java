@@ -133,4 +133,21 @@ public class CourseController {
         return ResponseEntity.of(courseToDelete);
     }
 
+    @DeleteMapping("/courses/{id}/teacher")
+    public ResponseEntity<Course> deleteTeacherFromCourse(@PathVariable int id, @RequestBody Teacher teacher) {
+        Optional<Teacher> teacherToDeleteFromCourse = teacherRepository.findById(teacher.getId());
+        Optional<Course> courseToDeleteTeacherFrom = courseRepository.findById(id);
+
+        if (teacherToDeleteFromCourse.isPresent() && courseToDeleteTeacherFrom.isPresent()) {
+            Course existingCourse = courseToDeleteTeacherFrom.get();
+            existingCourse.setTeacher(null);
+
+            courseRepository.save(existingCourse);
+            return ResponseEntity.ok().body(existingCourse);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }
