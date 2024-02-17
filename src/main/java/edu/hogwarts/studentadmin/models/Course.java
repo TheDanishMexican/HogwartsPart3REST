@@ -13,9 +13,14 @@ public class Course {
     private String subject;
     private int schoolYear;
     private boolean current;
-    @OneToMany(cascade =  CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(
+            name = "course_students",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
     private List<Student> students;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Teacher teacher;
 
     public Course() {

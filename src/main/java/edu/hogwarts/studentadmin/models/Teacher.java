@@ -12,7 +12,7 @@ public class Teacher {
     private String firstName;
     private String middleName;
     private String lastName;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private House house;
     private LocalDate dateOfBirth;
     private boolean headOfHouse;
