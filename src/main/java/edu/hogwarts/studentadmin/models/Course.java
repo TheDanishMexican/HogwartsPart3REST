@@ -87,6 +87,10 @@ public class Course {
         this.students = students;
     }
 
+    public void setStudentToCourse(Student student) {
+        students.add(student);
+    }
+
     public Teacher getTeacher() {
         return teacher;
     }

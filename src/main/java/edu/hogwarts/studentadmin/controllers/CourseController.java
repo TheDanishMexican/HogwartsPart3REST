@@ -39,6 +39,21 @@ public class CourseController {
         }
     }
 
+    @PutMapping("courses/{id}/students")
+    public ResponseEntity<Course> addStudentToCourse(@PathVariable int id, @RequestBody Student student) {
+        Optional<Course> course = courseRepository.findById(id);
+
+        if(course.isPresent()) {
+            Course existingCourse = course.get();
+            existingCourse.setStudentToCourse(student);
+
+            courseRepository.save(existingCourse);
+            return ResponseEntity.ok().body(existingCourse);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     @GetMapping("courses/{id}/students")
     public ResponseEntity<List<Student>> getCourseStudents(@PathVariable int id) {
