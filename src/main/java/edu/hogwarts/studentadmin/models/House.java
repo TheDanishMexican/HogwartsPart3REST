@@ -9,6 +9,7 @@ public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String name;
     private String founder;
     @OneToMany(cascade = CascadeType.ALL)
     private List<HouseColor> houseColors;
@@ -16,7 +17,8 @@ public class House {
     public House() {
     }
 
-    public House(String founder, List<HouseColor> houseColors) {
+    public House(String name, String founder, List<HouseColor> houseColors) {
+        this.name = name;
         this.founder = founder;
         this.houseColors = houseColors;
     }
@@ -53,5 +55,13 @@ public class House {
 
     public void setHouseColors(List<HouseColor> houseColors) {
         this.houseColors = houseColors;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -32,13 +32,13 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     public void run(String...args) {
-        House gryffindor = new House("Godric Gryffindor",
+        House gryffindor = new House("Gryffindor","Godric Gryffindor",
                 List.of(new HouseColor("Red"), new HouseColor("Gold")));
-        House hufflepuff = new House("Helga Hufflepuff",
+        House hufflepuff = new House("Hufflepuff","Helga Hufflepuff",
                 List.of(new HouseColor("Yellow"), new HouseColor("Black")));
-        House ravenclaw = new House("Rowena Ravenclaw",
+        House ravenclaw = new House("Ravenclaw","Rowena Ravenclaw",
                 List.of(new HouseColor("Blue"), new HouseColor("Bronze")));
-        House slytherin = new House("Salazar Slytherin",
+        House slytherin = new House("Slytherin","Salazar Slytherin",
                 List.of(new HouseColor("Green"), new HouseColor("Silver")));
 
         houseRepository.save(gryffindor);
