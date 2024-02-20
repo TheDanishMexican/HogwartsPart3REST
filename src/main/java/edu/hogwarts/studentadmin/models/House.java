@@ -7,8 +7,6 @@ import java.util.List;
 @Entity
 public class House {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     private String name;
     private String founder;
     @OneToMany(cascade = CascadeType.ALL)
@@ -31,14 +29,6 @@ public class House {
     public void copyFrom(House otherHouse) {
         this.setFounder(otherHouse.getFounder());
         this.setHouseColors(otherHouse.getHouseColors());
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFounder() {

@@ -8,39 +8,30 @@ import jakarta.persistence.Id;
 @Entity
 public class HouseColor {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String name;
+    private String color;
 
     public HouseColor() {
     }
 
-    public HouseColor(String name) {
-        this.name = name;
+    public HouseColor(String color) {
+        this.color = color;
     }
 
     public HouseColor(HouseColor otherHouseColor) {
-        this.id = otherHouseColor.getId();
-        this.name = otherHouseColor.getName();
+        this.color = otherHouseColor.getColor();
     }
 
     public void copyFrom(HouseColor otherHouseColor) {
-        this.setName(otherHouseColor.getName());
+        this.setColor(otherHouseColor.getColor());
     }
 
-    public String getName() {
-        return name;
+    public String getColor() {
+        return color;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setColor(String color) {
+        this.color = color;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }
+

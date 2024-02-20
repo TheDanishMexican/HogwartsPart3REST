@@ -1,5 +1,8 @@
 package edu.hogwarts.studentadmin.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -12,8 +15,13 @@ public class Student {
     private String firstName;
     private String middleName;
     private String lastName;
+
     @ManyToOne
+    @JoinColumn(name = "house")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+    @JsonIdentityReference(alwaysAsId = true)
     private House house;
+
     private LocalDate dateOfBirth;
     private boolean prefect;
     private int enrollmentYear;

@@ -25,9 +25,9 @@ public class HouseController {
         return allHouses;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<House> getHouse(@PathVariable int id) {
-        Optional<House> house = houseRepository.findById(id);
+    @GetMapping("/{name}")
+    public ResponseEntity<House> getHouse(@PathVariable String name) {
+        Optional<House> house = houseRepository.findByNameContainingIgnoreCase(name);
 
         return ResponseEntity.of(house);
     }
