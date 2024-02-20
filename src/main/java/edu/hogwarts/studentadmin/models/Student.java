@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Student {
@@ -41,6 +42,21 @@ public class Student {
         this.house = house;
     }
 
+    public Student(String fullName, LocalDate dateOfBirth, boolean prefect,
+                   int enrollmentYear, int graduationYear, boolean graduated, House house) {
+        List<String> nameParts = List.of(fullName.split("\\s"));
+
+        this.firstName = getFirstNameFromFullName(nameParts);
+        this.middleName = getMiddleNameFromFullName(nameParts);
+        this.lastName = getLastNameFromFullName(nameParts);
+        this.dateOfBirth = dateOfBirth;
+        this.prefect = prefect;
+        this.enrollmentYear = enrollmentYear;
+        this.graduationYear = graduationYear;
+        this.graduated = graduated;
+        this.house = house;
+    }
+
     public Student() {
     }
 
@@ -66,6 +82,22 @@ public class Student {
         this.setGraduationYear(otherStudent.getGraduationYear());
         this.setGraduated(otherStudent.isGraduated());
         this.setHouse(otherStudent.getHouse());
+    }
+
+    private String getFirstNameFromFullName(List<String> nameParts) {
+        return nameParts.get(0).trim();
+    }
+
+    private String getMiddleNameFromFullName(List<String> nameParts) {
+        return (nameParts.size() > 2) ?
+                String.join(" ", nameParts.subList(1, nameParts.size() - 1)).trim() :
+                "";
+    }
+
+    private String getLastNameFromFullName(List<String> nameParts) {
+        return (nameParts.size() > 1) ?
+                nameParts.get(nameParts.size() - 1).trim() :
+                "";
     }
 
     public String getFirstName() {

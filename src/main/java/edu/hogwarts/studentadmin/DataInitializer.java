@@ -62,10 +62,15 @@ public class DataInitializer implements CommandLineRunner {
                 LocalDate.of(1980, 6, 5),
                 false, 1991, 1998, true, slytherin);
 
+        Student dracoBadboy = new Student("I am the baddest boy of them all",
+                LocalDate.of(1980, 6, 5),
+                false, 1991, 1998, true, slytherin);
+
         studentRepository.save(harryPotter);
         studentRepository.save(cedricDiggory);
         studentRepository.save(dracoMalfoy);
         studentRepository.save(lunaLovegood);
+        studentRepository.save(dracoBadboy);
 
         Teacher minervaMcGonagall = new Teacher("Minerva", "", "McGonagall", LocalDate.of(1925, 10, 4),
                 true, EmploymentType.TENURED, LocalDate.of(1956, 9, 1), null, gryffindor);
