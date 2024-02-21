@@ -62,7 +62,7 @@ public class DataInitializer implements CommandLineRunner {
                 LocalDate.of(1980, 6, 5),
                 false, 1991, 1998, true, slytherin);
 
-        Student dracoBadboy = new Student("I am the baddest boy of them all",
+        Student dracoBadboy = new Student("my name is hulla bulla ballula",
                 LocalDate.of(1980, 6, 5),
                 false, 1991, 1998, true, slytherin);
 

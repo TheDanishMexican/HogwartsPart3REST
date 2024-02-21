@@ -85,19 +85,34 @@ public class Student {
     }
 
     private String getFirstNameFromFullName(List<String> nameParts) {
-        return nameParts.get(0).trim();
+         String firstNameLowerCased = nameParts.get(0).toLowerCase();
+         String firstLetterCapitalized = firstNameLowerCased.substring(0, 1).toUpperCase();
+
+         return firstLetterCapitalized + firstNameLowerCased.substring(1);
     }
 
     private String getMiddleNameFromFullName(List<String> nameParts) {
-        return (nameParts.size() > 2) ?
-                String.join(" ", nameParts.subList(1, nameParts.size() - 1)).trim() :
-                "";
+        String result = "";
+
+        if (nameParts.size() > 2) {
+            List<String> middleNames = nameParts.subList(1, nameParts.size() - 1);
+            for (int i = 0; i < middleNames.size(); i++) {
+                String middleNameLowerCased = middleNames.get(i).toLowerCase();
+                String capitalizedMiddleName = middleNameLowerCased.substring(0, 1).toUpperCase() +
+                        middleNameLowerCased.substring(1);
+
+                result += capitalizedMiddleName + " ";
+            }
+            return result.trim();
+        } else {
+            return "";
+        }
     }
 
     private String getLastNameFromFullName(List<String> nameParts) {
-        return (nameParts.size() > 1) ?
-                nameParts.get(nameParts.size() - 1).trim() :
-                "";
+        String lastNameLowerCased = nameParts.get(nameParts.size() - 1).toLowerCase();
+
+        return lastNameLowerCased.substring(0,1).toUpperCase() + lastNameLowerCased.substring(1);
     }
 
     public String getFirstName() {
