@@ -1,6 +1,7 @@
 package edu.hogwarts.studentadmin.controllers;
 
 import edu.hogwarts.studentadmin.models.Student;
+import edu.hogwarts.studentadmin.models.StudentPatchDTO;
 import edu.hogwarts.studentadmin.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,19 @@ public class StudentController {
 
     public StudentController(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
+    }
+
+    @PatchMapping("/students/{id}")
+    public ResponseEntity<Student> updateStudent(@PathVariable int id, @RequestBody StudentPatchDTO patchDTO) {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent()) {
+            Student existingStudent = optionalStudent.get();
+            existingStudent.applyPatch(patchDTO);
+            studentRepository.save(existingStudent);
+            return ResponseEntity.ok().body(existingStudent);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/students")

@@ -48,23 +48,23 @@ public class DataInitializer implements CommandLineRunner {
 
         Student harryPotter = new Student("Harry", "James", "Potter",
                 LocalDate.of(1980, 7, 31),
-                true, 1991, 1998, true, gryffindor);
+                true, 1991, 0, false, gryffindor, 4);
 
         Student cedricDiggory = new Student("Cedric", "", "Diggory",
                 LocalDate.of(1977, 9, 1),
-                false, 1989, 1996, true, hufflepuff);
+                false, 1989, 0, false, hufflepuff, 4);
 
         Student lunaLovegood = new Student("Luna", "Lovegood", "",
                 LocalDate.of(1981, 2, 13),
-                false, 1992, 1999, true, ravenclaw);
+                false, 1992, 0, false, ravenclaw, 4);
 
         Student dracoMalfoy = new Student("Draco", "Lucius", "Malfoy",
                 LocalDate.of(1980, 6, 5),
-                false, 1991, 1998, true, slytherin);
+                false, 1991, 0, false, slytherin, 4);
 
         Student dracoBadboy = new Student("my name is hulla bulla ballula",
                 LocalDate.of(1980, 6, 5),
-                false, 1991, 1998, true, slytherin);
+                false, 1991, 0, false, slytherin, 2);
 
         studentRepository.save(harryPotter);
         studentRepository.save(cedricDiggory);

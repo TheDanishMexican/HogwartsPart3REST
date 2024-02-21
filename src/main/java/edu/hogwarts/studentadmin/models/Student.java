@@ -2,6 +2,7 @@ package edu.hogwarts.studentadmin.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -28,9 +29,10 @@ public class Student {
     private int enrollmentYear;
     private int graduationYear;
     private boolean graduated;
+    private int schoolYear;
 
     public Student(String firstName, String middleName, String lastName, LocalDate dateOfBirth, boolean prefect,
-                   int enrollmentYear, int graduationYear, boolean graduated, House house) {
+                   int enrollmentYear, Integer graduationYear, boolean graduated, House house, int schoolYear) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -40,10 +42,11 @@ public class Student {
         this.graduationYear = graduationYear;
         this.graduated = graduated;
         this.house = house;
+        this.schoolYear = schoolYear;
     }
 
     public Student(String fullName, LocalDate dateOfBirth, boolean prefect,
-                   int enrollmentYear, int graduationYear, boolean graduated, House house) {
+                   int enrollmentYear, int graduationYear, boolean graduated, House house, int schoolYear) {
         List<String> nameParts = List.of(fullName.split("\\s"));
 
         this.firstName = getFirstNameFromFullName(nameParts);
@@ -55,6 +58,7 @@ public class Student {
         this.graduationYear = graduationYear;
         this.graduated = graduated;
         this.house = house;
+        this.schoolYear = schoolYear;
     }
 
     public Student() {
@@ -70,6 +74,7 @@ public class Student {
         this.graduationYear = otherStudent.getGraduationYear();
         this.graduated = otherStudent.isGraduated();
         this.house = otherStudent.getHouse();
+        this.schoolYear = otherStudent.getSchoolYear();
     }
 
     public void copyFrom(Student otherStudent) {
@@ -83,6 +88,27 @@ public class Student {
         this.setGraduated(otherStudent.isGraduated());
         this.setHouse(otherStudent.getHouse());
     }
+
+    public void applyPatch(StudentPatchDTO patchDTO) {
+        if (patchDTO.getPrefect() != null) {
+            this.setPrefect(patchDTO.getPrefect());
+        }
+        if (patchDTO.getSchoolYear() != 0) {
+            this.setSchoolYear(patchDTO.getSchoolYear());
+        }
+        if (patchDTO.getGraduated() != null) {
+            this.setGraduated(patchDTO.getGraduated());
+        }
+        if (patchDTO.getGraduationYear() != 0) {
+            this.setGraduationYear(patchDTO.getGraduationYear());
+        }
+
+        // Check if graduationYear is not null and greater than 0
+        if (patchDTO.getGraduationYear() > 0) {
+            this.setGraduated(true);
+        }
+    }
+
 
     private String getFirstNameFromFullName(List<String> nameParts) {
          String firstNameLowerCased = nameParts.get(0).toLowerCase();
@@ -193,6 +219,14 @@ public class Student {
 
     public void setHouse(House house) {
         this.house = house;
+    }
+
+    public int getSchoolYear() {
+        return schoolYear;
+    }
+
+    public void setSchoolYear(int schoolYear) {
+        this.schoolYear = schoolYear;
     }
 
     @Override
