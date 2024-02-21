@@ -1,5 +1,9 @@
 package edu.hogwarts.studentadmin.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import edu.hogwarts.studentadmin.models.DTOs.TeacherPatchDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -12,6 +16,9 @@ public class Teacher {
     private String firstName;
     private String middleName;
     private String lastName;
+    @JoinColumn(name = "house")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     private House house;
     private LocalDate dateOfBirth;
@@ -49,6 +56,20 @@ public class Teacher {
         this.employmentStart = otherTeacher.getEmploymentStart();
         this.employmentEnd = otherTeacher.getEmploymentEnd();
         this.house = otherTeacher.getHouse();
+    }
+
+    public void applyPatch(TeacherPatchDTO teacherDTO) {
+        if (teacherDTO.getHeadOfHouse() != null) {
+            this.setHeadOfHouse(teacherDTO.getHeadOfHouse());
+        }
+
+        if (teacherDTO.getEmploymentEnd() != null) {
+            this.setEmploymentEnd(teacherDTO.getEmploymentEnd());
+        }
+
+        if (teacherDTO.getEmploymentType() != null) {
+            this.setEmploymentType(teacherDTO.getEmploymentType());
+        }
     }
 
     public void copyFrom(Teacher otherTeacher) {

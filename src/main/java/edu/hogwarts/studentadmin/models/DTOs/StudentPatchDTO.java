@@ -1,4 +1,4 @@
-package edu.hogwarts.studentadmin.models;
+package edu.hogwarts.studentadmin.models.DTOs;
 
 public class StudentPatchDTO {
     private Boolean prefect;
