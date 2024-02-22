@@ -17,7 +17,7 @@ public class Student {
     private String firstName;
     private String middleName;
     private String lastName;
-
+    private String allName;
     @ManyToOne
     @JoinColumn(name = "house")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
@@ -43,6 +43,7 @@ public class Student {
         this.graduated = graduated;
         this.house = house;
         this.schoolYear = schoolYear;
+        this.allName = (firstName + " " + (middleName.isEmpty() ? "" : middleName + " ") + lastName + " ").trim();
     }
 
     public Student(String fullName, LocalDate dateOfBirth, boolean prefect,
@@ -59,6 +60,7 @@ public class Student {
         this.graduated = graduated;
         this.house = house;
         this.schoolYear = schoolYear;
+        this.allName = (firstName + " " + (middleName.isEmpty() ? "" : middleName + " ") + lastName + " ").trim();
     }
 
     public Student() {
@@ -110,14 +112,14 @@ public class Student {
     }
 
 
-    private String getFirstNameFromFullName(List<String> nameParts) {
+    public String getFirstNameFromFullName(List<String> nameParts) {
          String firstNameLowerCased = nameParts.get(0).toLowerCase();
          String firstLetterCapitalized = firstNameLowerCased.substring(0, 1).toUpperCase();
 
          return firstLetterCapitalized + firstNameLowerCased.substring(1);
     }
 
-    private String getMiddleNameFromFullName(List<String> nameParts) {
+    public String getMiddleNameFromFullName(List<String> nameParts) {
         String result = "";
 
         if (nameParts.size() > 2) {
@@ -135,7 +137,7 @@ public class Student {
         }
     }
 
-    private String getLastNameFromFullName(List<String> nameParts) {
+    public String getLastNameFromFullName(List<String> nameParts) {
         String lastNameLowerCased = nameParts.get(nameParts.size() - 1).toLowerCase();
 
         return lastNameLowerCased.substring(0,1).toUpperCase() + lastNameLowerCased.substring(1);
@@ -227,6 +229,14 @@ public class Student {
 
     public void setSchoolYear(int schoolYear) {
         this.schoolYear = schoolYear;
+    }
+
+    public String getAllName() {
+        return allName;
+    }
+
+    public void setAllName(String allName) {
+        this.allName = allName;
     }
 
     @Override

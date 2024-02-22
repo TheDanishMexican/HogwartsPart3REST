@@ -32,6 +32,13 @@ public class StudentController {
         }
     }
 
+    @GetMapping("/students/name/{name}")
+    public ResponseEntity<Student> findStudentByName(@PathVariable String name) {
+        Optional<Student> student = studentRepository.findFirstByAllNameContainingIgnoreCase(name);
+        System.out.println(name);
+        return ResponseEntity.of(student);
+    }
+
     @GetMapping("/students")
     public List<Student> getAllStudents() {
         List<Student> students = studentRepository.findAll();

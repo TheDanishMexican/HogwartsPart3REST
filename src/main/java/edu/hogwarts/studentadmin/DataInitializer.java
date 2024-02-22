@@ -98,8 +98,7 @@ public class DataInitializer implements CommandLineRunner {
         Course charmsCourse = new Course(flitwick, "Charms", 2024, true,
                 List.of(harryPotter, dracoMalfoy, lunaLovegood, cedricDiggory));
 
-        Course potionsCourse = new Course(severusSnape, "Potions", 2024, true,
-                List.of(harryPotter, dracoMalfoy, lunaLovegood, cedricDiggory));
+        Course potionsCourse = new Course(severusSnape, "Potions", 2024, true, null);
 
         courseRepository.save(transfigurationCourse);
         courseRepository.save(herbologyCourse);
