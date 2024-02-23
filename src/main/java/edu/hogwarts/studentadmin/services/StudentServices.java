@@ -1,6 +1,10 @@
 package edu.hogwarts.studentadmin.services;
 
+import edu.hogwarts.studentadmin.dtos.StudentRequestDTO;
+import edu.hogwarts.studentadmin.dtos.StudentResponseDTO;
+import edu.hogwarts.studentadmin.models.House;
 import edu.hogwarts.studentadmin.models.Student;
+import edu.hogwarts.studentadmin.repositories.HouseRepository;
 import edu.hogwarts.studentadmin.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,41 +14,91 @@ import java.util.Optional;
 @Service
 public class StudentServices {
 
-
     private final StudentRepository studentRepository;
+    private final HouseRepository houseRepository;
 
-    public StudentServices(StudentRepository studentRepository) {
+
+    public StudentServices(StudentRepository studentRepository, HouseRepository houseRepository) {
         this.studentRepository = studentRepository;
+        this.houseRepository = houseRepository;
     }
 
-    public List<Student> findAll() {
-        return studentRepository.findAll();
+    public List<StudentResponseDTO> findAll() {
+        return studentRepository.findAll().stream().map(this::toDTO).toList();
     }
 
-    public Optional<Student> findById(int id) {
-        return studentRepository.findById(id);
+    public Optional<StudentResponseDTO> findById(int id) {
+        Optional<Student> student = studentRepository.findById(id);
+
+        if (student.isPresent()) {
+            Student existingStudent = student.get();
+            StudentResponseDTO dto = toDTO(existingStudent);
+
+            return Optional.of(dto);
+        } else {
+            return Optional.empty();
+        }
+
+//        return studentRepository.findById(id).map(this::toDTO);
     }
 
-    public Student save(Student student) {
-        return studentRepository.save(student);
+    public StudentResponseDTO save(StudentRequestDTO student) {
+        return toDTO(studentRepository.save(toEntity(student)));
     }
 
     public Optional<Student> findFirstByAllNameContainingIgnoreCase(String name) {
         return studentRepository.findFirstByAllNameContainingIgnoreCase(name);
     }
 
-    public Optional<Student> deleteById(int id) {
-        Optional<Student> existingStudent = studentRepository.findById(id);
+    public Optional<StudentResponseDTO> deleteById(int id) {
+        Optional<StudentResponseDTO> existingStudent = this.findById(id);
         studentRepository.deleteById(id);
         return existingStudent;
     }
 
-    public Optional<Student> updateIfExists(int id, Student student) {
-        Optional<Student> existingStudent = studentRepository.findById(id);
-        if (existingStudent.isPresent()) {
-            student.setId(id);
-            studentRepository.save(student);
+    public Optional<StudentResponseDTO> updateIfExists(int id, StudentRequestDTO student) {
+
+        if (studentRepository.existsById(id)) {
+            Student studentEntity = toEntity(student);
+            studentEntity.setId(id);
+            studentRepository.save(studentEntity);
+            return Optional.of(toDTO(studentEntity));
+        } else {
+            return Optional.empty();
         }
-        return existingStudent;
+    }
+
+    public StudentResponseDTO toDTO(Student entity) {
+        StudentResponseDTO dto = new StudentResponseDTO();
+
+        dto.setId(entity.getId());
+        dto.setFirstName(entity.getFirstName());
+        dto.setMiddleName(entity.getMiddleName());
+        dto.setLastName(entity.getLastName());
+        dto.setAllName(entity.getAllName());
+        dto.setDateOfBirth(entity.getDateOfBirth());
+        dto.setPrefect(entity.isPrefect());
+        dto.setEnrollmentYear(entity.getEnrollmentYear());
+        dto.setGraduated(entity.isGraduated());
+        dto.setHouse(entity.getHouse().getName());
+
+        return dto;
+    }
+
+    private Student toEntity(StudentRequestDTO dto) {
+        Student studentEntity = new Student();
+        studentEntity.setId(dto.getId());
+        studentEntity.setFirstName(dto.getFirstName());
+        studentEntity.setMiddleName(dto.getMiddleName());
+        studentEntity.setLastName(dto.getLastName());
+        studentEntity.setDateOfBirth(dto.getDateOfBirth());
+        studentEntity.setPrefect(dto.isPrefect());
+        studentEntity.setEnrollmentYear(dto.getEnrollmentYear());
+        studentEntity.setGraduated(dto.isGraduated());
+
+        Optional<House> house = houseRepository.findById(dto.getHouse());
+        house.ifPresent(studentEntity::setHouse);
+
+        return studentEntity;
     }
 }

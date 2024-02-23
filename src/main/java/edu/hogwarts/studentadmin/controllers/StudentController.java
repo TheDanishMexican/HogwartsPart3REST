@@ -1,9 +1,9 @@
 package edu.hogwarts.studentadmin.controllers;
 
+import edu.hogwarts.studentadmin.dtos.StudentRequestDTO;
+import edu.hogwarts.studentadmin.dtos.StudentResponseDTO;
 import edu.hogwarts.studentadmin.models.Student;
-import edu.hogwarts.studentadmin.models.DTOs.StudentPatchDTO;
 import edu.hogwarts.studentadmin.services.StudentServices;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,18 +19,18 @@ public class StudentController {
         this.studentServices = studentServices;
     }
 
-    @PatchMapping("/students/{id}")
-    public ResponseEntity<Student> patchStudent(@PathVariable int id, @RequestBody StudentPatchDTO patchDTO) {
-        Optional<Student> optionalStudent = studentServices.findById(id);
-        if (optionalStudent.isPresent()) {
-            Student existingStudent = optionalStudent.get();
-            existingStudent.applyPatch(patchDTO);
-            studentServices.save(existingStudent);
-            return ResponseEntity.ok().body(existingStudent);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @PatchMapping("/students/{id}")
+//    public ResponseEntity<StudentDTO> patchStudent(@PathVariable int id, @RequestBody StudentPatchDTO patchDTO) {
+//        Optional<StudentDTO> optionalStudent = studentServices.findById(id);
+//        if (optionalStudent.isPresent()) {
+//            StudentDTO existingStudent = optionalStudent.get();
+//            existingStudent.applyPatch(patchDTO);
+//            studentServices.save(existingStudent);
+//            return ResponseEntity.ok().body(existingStudent);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @GetMapping("/students/name/{name}")
     public ResponseEntity<Student> findStudentByName(@PathVariable String name) {
@@ -40,33 +40,35 @@ public class StudentController {
     }
 
     @GetMapping("/students")
-    public List<Student> getAllStudents() {
-        List<Student> students = studentServices.findAll();
+    public List<StudentResponseDTO> getAllStudents() {
+        List<StudentResponseDTO> students = studentServices.findAll();
 
         return students;
     }
 
     @GetMapping("/students/{id}")
-    public ResponseEntity<Student> getStudent(@PathVariable int id) {
-        Optional<Student> student = studentServices.findById(id);
+    public ResponseEntity<StudentResponseDTO> getStudent(@PathVariable int id) {
+        Optional<StudentResponseDTO> student = studentServices.findById(id);
 
         return ResponseEntity.of(student);
     }
 
     @PostMapping("/students")
-    public Student createStudent(@RequestBody Student student) {
+    public StudentResponseDTO createStudent(@RequestBody StudentRequestDTO student) {
         return studentServices.save(student);
     }
 
     @PutMapping("/students/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable int id, @RequestBody Student student) {
+    public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable int id, @RequestBody StudentRequestDTO student) {
         return ResponseEntity.of(studentServices.updateIfExists(id, student));
     }
 
     @DeleteMapping("/students/{id}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable int id) {
+    public ResponseEntity<StudentResponseDTO> deleteStudent(@PathVariable int id) {
         return ResponseEntity.of(studentServices.deleteById(id));
     }
+
+
 
 
 }

@@ -38,7 +38,7 @@ public class HouseController {
     }
 
     @PutMapping ("/{id}")
-    public ResponseEntity<House> updateHouse(@PathVariable int id, @RequestBody House house) {
+    public ResponseEntity<House> updateHouse(@PathVariable String id, @RequestBody House house) {
         Optional<House> objectToUpdate = houseRepository.findById(id);
 
         if(objectToUpdate.isPresent()) {
@@ -56,7 +56,7 @@ public class HouseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<House> deleteHouse(@PathVariable int id) {
+    public ResponseEntity<House> deleteHouse(@PathVariable String id) {
         Optional<House> houseToDelete = houseRepository.findById(id);
         houseRepository.deleteById(id);
 
