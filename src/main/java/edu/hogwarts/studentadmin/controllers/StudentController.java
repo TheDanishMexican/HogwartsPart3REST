@@ -2,7 +2,7 @@ package edu.hogwarts.studentadmin.controllers;
 
 import edu.hogwarts.studentadmin.models.Student;
 import edu.hogwarts.studentadmin.models.DTOs.StudentPatchDTO;
-import edu.hogwarts.studentadmin.repositories.StudentRepository;
+import edu.hogwarts.studentadmin.services.StudentServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,19 +13,19 @@ import java.util.Optional;
 @RestController
 public class StudentController {
 
-    private final StudentRepository studentRepository;
+    private final StudentServices studentServices;
 
-    public StudentController(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
+    public StudentController(StudentServices studentServices) {
+        this.studentServices = studentServices;
     }
 
     @PatchMapping("/students/{id}")
     public ResponseEntity<Student> patchStudent(@PathVariable int id, @RequestBody StudentPatchDTO patchDTO) {
-        Optional<Student> optionalStudent = studentRepository.findById(id);
+        Optional<Student> optionalStudent = studentServices.findById(id);
         if (optionalStudent.isPresent()) {
             Student existingStudent = optionalStudent.get();
             existingStudent.applyPatch(patchDTO);
-            studentRepository.save(existingStudent);
+            studentServices.save(existingStudent);
             return ResponseEntity.ok().body(existingStudent);
         } else {
             return ResponseEntity.notFound().build();
@@ -34,55 +34,38 @@ public class StudentController {
 
     @GetMapping("/students/name/{name}")
     public ResponseEntity<Student> findStudentByName(@PathVariable String name) {
-        Optional<Student> student = studentRepository.findFirstByAllNameContainingIgnoreCase(name);
+        Optional<Student> student = studentServices.findFirstByAllNameContainingIgnoreCase(name);
         System.out.println(name);
         return ResponseEntity.of(student);
     }
 
     @GetMapping("/students")
     public List<Student> getAllStudents() {
-        List<Student> students = studentRepository.findAll();
+        List<Student> students = studentServices.findAll();
 
         return students;
     }
 
     @GetMapping("/students/{id}")
     public ResponseEntity<Student> getStudent(@PathVariable int id) {
-        Optional<Student> student = studentRepository.findById(id);
+        Optional<Student> student = studentServices.findById(id);
 
         return ResponseEntity.of(student);
     }
 
     @PostMapping("/students")
     public Student createStudent(@RequestBody Student student) {
-        return studentRepository.save(student);
+        return studentServices.save(student);
     }
 
     @PutMapping("/students/{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable int id, @RequestBody Student student) {
-        Optional<Student> original = studentRepository.findById(id);
-
-        if (original.isPresent()) {
-            Student originalStudent = original.get();
-            originalStudent.copyFrom(student);
-
-            Student updatedStudent = studentRepository.save(originalStudent);
-            return ResponseEntity.ok().body(updatedStudent);
-        } else {
-            Student newStudent = new Student();
-            newStudent.copyFrom(student);
-
-            Student savedStudent = studentRepository.save(newStudent);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedStudent);
-        }
+        return ResponseEntity.of(studentServices.updateIfExists(id, student));
     }
 
     @DeleteMapping("/students/{id}")
     public ResponseEntity<Student> deleteStudent(@PathVariable int id) {
-        Optional<Student> studentToDelete = studentRepository.findById(id);
-        studentRepository.deleteById(id);
-
-        return ResponseEntity.of(studentToDelete);
+        return ResponseEntity.of(studentServices.deleteById(id));
     }
 
 
