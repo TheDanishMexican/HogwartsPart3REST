@@ -3,7 +3,6 @@ package edu.hogwarts.studentadmin.models;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import edu.hogwarts.studentadmin.models.DTOs.StudentPatchDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -65,52 +64,6 @@ public class Student {
 
     public Student() {
     }
-
-    public Student(Student otherStudent) {
-        this.firstName = otherStudent.getFirstName();
-        this.middleName = otherStudent.getMiddleName();
-        this.lastName = otherStudent.getLastName();
-        this.dateOfBirth = otherStudent.getDateOfBirth();
-        this.prefect = otherStudent.isPrefect();
-        this.enrollmentYear = otherStudent.getEnrollmentYear();
-        this.graduationYear = otherStudent.getGraduationYear();
-        this.graduated = otherStudent.isGraduated();
-        this.house = otherStudent.getHouse();
-        this.schoolYear = otherStudent.getSchoolYear();
-    }
-
-    public void copyFrom(Student otherStudent) {
-        this.setFirstName(otherStudent.getFirstName());
-        this.setMiddleName(otherStudent.getMiddleName());
-        this.setLastName(otherStudent.getLastName());
-        this.setDateOfBirth(otherStudent.getDateOfBirth());
-        this.setPrefect(otherStudent.isPrefect());
-        this.setEnrollmentYear(otherStudent.getEnrollmentYear());
-        this.setGraduationYear(otherStudent.getGraduationYear());
-        this.setGraduated(otherStudent.isGraduated());
-        this.setHouse(otherStudent.getHouse());
-    }
-
-    public void applyPatch(StudentPatchDTO patchDTO) {
-        if (patchDTO.getPrefect() != null) {
-            this.setPrefect(patchDTO.getPrefect());
-        }
-        if (patchDTO.getSchoolYear() != 0) {
-            this.setSchoolYear(patchDTO.getSchoolYear());
-        }
-        if (patchDTO.getGraduated() != null) {
-            this.setGraduated(patchDTO.getGraduated());
-        }
-        if (patchDTO.getGraduationYear() != 0) {
-            this.setGraduationYear(patchDTO.getGraduationYear());
-        }
-
-        // Check if graduationYear is not null and greater than 0
-        if (patchDTO.getGraduationYear() > 0) {
-            this.setGraduated(true);
-        }
-    }
-
 
     public String getFirstNameFromFullName(List<String> nameParts) {
          String firstNameLowerCased = nameParts.get(0).toLowerCase();

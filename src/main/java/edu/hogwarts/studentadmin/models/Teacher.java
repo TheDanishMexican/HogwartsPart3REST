@@ -3,7 +3,6 @@ package edu.hogwarts.studentadmin.models;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import edu.hogwarts.studentadmin.models.DTOs.TeacherPatchDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -58,19 +57,6 @@ public class Teacher {
         this.house = otherTeacher.getHouse();
     }
 
-    public void applyPatch(TeacherPatchDTO teacherDTO) {
-        if (teacherDTO.getHeadOfHouse() != null) {
-            this.setHeadOfHouse(teacherDTO.getHeadOfHouse());
-        }
-
-        if (teacherDTO.getEmploymentEnd() != null) {
-            this.setEmploymentEnd(teacherDTO.getEmploymentEnd());
-        }
-
-        if (teacherDTO.getEmploymentType() != null) {
-            this.setEmploymentType(teacherDTO.getEmploymentType());
-        }
-    }
 
     public void copyFrom(Teacher otherTeacher) {
         this.setFirstName(otherTeacher.getFirstName());

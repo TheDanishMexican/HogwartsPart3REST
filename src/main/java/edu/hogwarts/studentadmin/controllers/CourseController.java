@@ -44,64 +44,6 @@ public class CourseController {
         }
     }
 
-    @PostMapping("courses/{id}/students/add_by_id")
-    public ResponseEntity<Course> addStudentsToCourseByID(@PathVariable int id, @RequestBody Map<String, List<Student>> requestBody) {
-        Optional<Course> course = courseRepository.findById(id);
-
-        List<Student> students = requestBody.get("students");
-
-        if (course.isPresent()) {
-            Course existingCourse = course.get();
-
-            for (Student studentItem : students) {
-                Optional<Student> student = studentRepository.findById(studentItem.getId());
-                    if (student.isPresent()) {
-                        Student existingStudent = student.get();
-                        existingCourse.setStudentToCourse(existingStudent);
-                    } else {
-                        System.out.println("Student with ID: " + studentItem.getId() + " not found.");
-                        return ResponseEntity.notFound().build();
-                    }
-            }
-
-            courseRepository.save(existingCourse);
-            return ResponseEntity.ok().body(existingCourse);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping("courses/{id}/students/add_by_name")
-    public ResponseEntity<Course> addStudentsToCourseByName(@PathVariable int id, @RequestBody Map<String, List<Map<String, String>>> requestBody) {
-        Optional<Course> course = courseRepository.findById(id);
-
-        List<Map<String, String>> students = requestBody.get("students");
-
-        if (course.isPresent()) {
-            Course existingCourse = course.get();
-
-            for (Map<String, String> studentMap : students) {
-                String name = studentMap.get("name");
-                Optional<Student> student = studentRepository.findFirstByAllNameContainingIgnoreCase(name);
-
-                if (student.isPresent()) {
-                    Student existingStudent = student.get();
-                    existingCourse.setStudentToCourse(existingStudent);
-                } else {
-                    System.out.println("No student with name: " + name);
-                    return ResponseEntity.notFound().build();
-                }
-            }
-
-            courseRepository.save(existingCourse);
-            return ResponseEntity.ok().body(existingCourse);
-
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-
     @GetMapping("courses/{id}/students")
     public ResponseEntity<List<Student>> getCourseStudents(@PathVariable int id) {
         Optional<Course> optionalCourse = courseRepository.findById(id);
@@ -113,7 +55,6 @@ public class CourseController {
             return ResponseEntity.notFound().build();
         }
     }
-
 
     @GetMapping("courses/{id}/teacher")
     public ResponseEntity<Teacher> getCourseTeacher(@PathVariable int id) {

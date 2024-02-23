@@ -19,19 +19,6 @@ public class StudentController {
         this.studentServices = studentServices;
     }
 
-//    @PatchMapping("/students/{id}")
-//    public ResponseEntity<StudentDTO> patchStudent(@PathVariable int id, @RequestBody StudentPatchDTO patchDTO) {
-//        Optional<StudentDTO> optionalStudent = studentServices.findById(id);
-//        if (optionalStudent.isPresent()) {
-//            StudentDTO existingStudent = optionalStudent.get();
-//            existingStudent.applyPatch(patchDTO);
-//            studentServices.save(existingStudent);
-//            return ResponseEntity.ok().body(existingStudent);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-
     @GetMapping("/students/name/{name}")
     public ResponseEntity<Student> findStudentByName(@PathVariable String name) {
         Optional<Student> student = studentServices.findFirstByAllNameContainingIgnoreCase(name);

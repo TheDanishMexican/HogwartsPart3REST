@@ -95,7 +95,7 @@ public class StudentServices {
         studentEntity.setPrefect(dto.isPrefect());
         studentEntity.setEnrollmentYear(dto.getEnrollmentYear());
         studentEntity.setGraduated(dto.isGraduated());
-
+        studentEntity.setAllName((dto.getFirstName() + " " + (dto.getMiddleName().isEmpty() ? "" : dto.getMiddleName() + " ") + dto.getLastName() + " ").trim());
         Optional<House> house = houseRepository.findById(dto.getHouse());
         house.ifPresent(studentEntity::setHouse);
 
