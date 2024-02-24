@@ -1,5 +1,6 @@
 package edu.hogwarts.studentadmin.services;
 
+import edu.hogwarts.studentadmin.dtos.StudentPatchDTO;
 import edu.hogwarts.studentadmin.dtos.StudentRequestDTO;
 import edu.hogwarts.studentadmin.dtos.StudentResponseDTO;
 import edu.hogwarts.studentadmin.models.House;
@@ -69,6 +70,19 @@ public class StudentServices {
         }
     }
 
+    public Optional<StudentResponseDTO> patchStudentIfExists(int id, StudentPatchDTO patchDTO) {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+
+        if (optionalStudent.isPresent()) {
+            Student student = optionalStudent.get();
+            patchDTO.applyPatch(student);
+            studentRepository.save(student);
+            return Optional.of(toDTO(student));
+        } else {
+            return Optional.empty();
+        }
+    }
+
     public StudentResponseDTO toDTO(Student entity) {
         return new StudentResponseDTO(
                 entity.getId(),
@@ -80,7 +94,8 @@ public class StudentServices {
                 entity.isPrefect(),
                 entity.getEnrollmentYear(),
                 entity.isGraduated(),
-                entity.getHouse().getName()
+                entity.getHouse().getName(),
+                entity.getSchoolYear()
         );
     }
 

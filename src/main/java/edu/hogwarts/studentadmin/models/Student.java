@@ -47,7 +47,7 @@ public class Student {
 
     public Student(String fullName, LocalDate dateOfBirth, boolean prefect,
                    int enrollmentYear, int graduationYear, boolean graduated, House house, int schoolYear) {
-        List<String> nameParts = List.of(fullName.split("\\s"));
+        List<String> nameParts = List.of(fullName.split("\\s+"));
 
         this.firstName = getFirstNameFromFullName(nameParts);
         this.middleName = getMiddleNameFromFullName(nameParts);
@@ -67,13 +67,13 @@ public class Student {
 
     public Student(String fullName, House house) {
         this();
-        List<String> nameParts = List.of(fullName.split("\\s"));
+        List<String> nameParts = List.of(fullName.split("\\s+"));
 
         this.firstName = getFirstNameFromFullName(nameParts);
         this.middleName = getMiddleNameFromFullName(nameParts);
         this.lastName = getLastNameFromFullName(nameParts);
         this.house = house;
-        this.allName = (firstName + " " + (middleName == null ? "" : middleName + " ") + lastName + " ").trim();
+        this.allName = (firstName + " " + (middleName == null || middleName.isEmpty() ? "" : middleName + " ") + lastName + " ").trim();
     }
 
 

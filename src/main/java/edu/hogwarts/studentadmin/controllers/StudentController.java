@@ -1,5 +1,6 @@
 package edu.hogwarts.studentadmin.controllers;
 
+import edu.hogwarts.studentadmin.dtos.StudentPatchDTO;
 import edu.hogwarts.studentadmin.dtos.StudentRequestDTO;
 import edu.hogwarts.studentadmin.dtos.StudentResponseDTO;
 import edu.hogwarts.studentadmin.models.Student;
@@ -53,6 +54,11 @@ public class StudentController {
     @DeleteMapping("/students/{id}")
     public ResponseEntity<StudentResponseDTO> deleteStudent(@PathVariable int id) {
         return ResponseEntity.of(studentServices.deleteById(id));
+    }
+
+    @PatchMapping("/students/{id}")
+    public ResponseEntity<StudentResponseDTO> patchStudent(@PathVariable int id, @RequestBody StudentPatchDTO student) {
+        return ResponseEntity.of(studentServices.patchStudentIfExists(id, student));
     }
 
 

@@ -12,7 +12,8 @@ public record StudentResponseDTO(
         boolean prefect,
         int enrollmentYear,
         boolean graduated,
-        String house
+        String house,
+        int schoolYear
 ) {
 }
 
