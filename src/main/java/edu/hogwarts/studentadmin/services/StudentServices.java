@@ -64,41 +64,45 @@ public class StudentServices {
             studentRepository.save(studentEntity);
             return Optional.of(toDTO(studentEntity));
         } else {
+
             return Optional.empty();
         }
     }
 
     public StudentResponseDTO toDTO(Student entity) {
-        StudentResponseDTO dto = new StudentResponseDTO();
-
-        dto.setId(entity.getId());
-        dto.setFirstName(entity.getFirstName());
-        dto.setMiddleName(entity.getMiddleName());
-        dto.setLastName(entity.getLastName());
-        dto.setAllName(entity.getAllName());
-        dto.setDateOfBirth(entity.getDateOfBirth());
-        dto.setPrefect(entity.isPrefect());
-        dto.setEnrollmentYear(entity.getEnrollmentYear());
-        dto.setGraduated(entity.isGraduated());
-        dto.setHouse(entity.getHouse().getName());
-
-        return dto;
+        return new StudentResponseDTO(
+                entity.getId(),
+                entity.getFirstName(),
+                entity.getMiddleName(),
+                entity.getLastName(),
+                entity.getAllName(),
+                entity.getDateOfBirth(),
+                entity.isPrefect(),
+                entity.getEnrollmentYear(),
+                entity.isGraduated(),
+                entity.getHouse().getName()
+        );
     }
 
     private Student toEntity(StudentRequestDTO dto) {
-        Student studentEntity = new Student();
-        studentEntity.setId(dto.getId());
-        studentEntity.setFirstName(dto.getFirstName());
-        studentEntity.setMiddleName(dto.getMiddleName());
-        studentEntity.setLastName(dto.getLastName());
-        studentEntity.setDateOfBirth(dto.getDateOfBirth());
-        studentEntity.setPrefect(dto.isPrefect());
-        studentEntity.setEnrollmentYear(dto.getEnrollmentYear());
-        studentEntity.setGraduated(dto.isGraduated());
-        studentEntity.setAllName((dto.getFirstName() + " " + (dto.getMiddleName().isEmpty() ? "" : dto.getMiddleName() + " ") + dto.getLastName() + " ").trim());
-        Optional<House> house = houseRepository.findById(dto.getHouse());
-        house.ifPresent(studentEntity::setHouse);
-
-        return studentEntity;
+        if(dto.name() != null) {
+            return new Student(dto.name(), houseRepository.findById(dto.house()).orElse(null));
+        } else {
+            return new Student(
+                    dto.firstName(),
+                    dto.middleName(),
+                    dto.lastName(),
+                    dto.dateOfBirth(),
+                    dto.prefect(),
+                    dto.enrollmentYear(),
+                    dto.graduationYear(),
+                    dto.graduated(),
+                    houseRepository.findById(dto.house()).orElse(null),
+                    dto.schoolYear()
+            );
+        }
     }
+
+
+
 }

@@ -42,7 +42,7 @@ public class Student {
         this.graduated = graduated;
         this.house = house;
         this.schoolYear = schoolYear;
-        this.allName = (firstName + " " + (middleName.isEmpty() ? "" : middleName + " ") + lastName + " ").trim();
+        this.allName = (firstName + " " + (middleName == null ? "" : middleName + " ") + lastName + " ").trim();
     }
 
     public Student(String fullName, LocalDate dateOfBirth, boolean prefect,
@@ -59,11 +59,23 @@ public class Student {
         this.graduated = graduated;
         this.house = house;
         this.schoolYear = schoolYear;
-        this.allName = (firstName + " " + (middleName.isEmpty() ? "" : middleName + " ") + lastName + " ").trim();
+        this.allName = (firstName + " " + (middleName == null ? "" : middleName + " ") + lastName + " ").trim();
     }
 
     public Student() {
     }
+
+    public Student(String fullName, House house) {
+        this();
+        List<String> nameParts = List.of(fullName.split("\\s"));
+
+        this.firstName = getFirstNameFromFullName(nameParts);
+        this.middleName = getMiddleNameFromFullName(nameParts);
+        this.lastName = getLastNameFromFullName(nameParts);
+        this.house = house;
+        this.allName = (firstName + " " + (middleName == null ? "" : middleName + " ") + lastName + " ").trim();
+    }
+
 
     public String getFirstNameFromFullName(List<String> nameParts) {
          String firstNameLowerCased = nameParts.get(0).toLowerCase();
