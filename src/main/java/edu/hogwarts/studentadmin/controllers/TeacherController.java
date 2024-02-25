@@ -1,7 +1,10 @@
 package edu.hogwarts.studentadmin.controllers;
 
+import edu.hogwarts.studentadmin.dtos.TeacherRequestDTO;
+import edu.hogwarts.studentadmin.dtos.TeacherResponseDTO;
 import edu.hogwarts.studentadmin.models.Teacher;
 import edu.hogwarts.studentadmin.repositories.TeacherRepository;
+import edu.hogwarts.studentadmin.services.TeacherServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,55 +14,40 @@ import java.util.Optional;
 
 @RestController
 public class TeacherController {
-    private final TeacherRepository teacherRepository;
+    private final TeacherServices teacherServices;
 
-    public TeacherController(TeacherRepository teacherRepository) {
-        this.teacherRepository = teacherRepository;
+    public TeacherController(TeacherServices teacherServices) {
+
+        this.teacherServices = teacherServices;
     }
 
     @GetMapping("/teachers/{id}")
-    public ResponseEntity<Teacher> getTeacher(@PathVariable int id) {
-        Optional<Teacher> teacher = teacherRepository.findById(id);
+    public ResponseEntity<TeacherResponseDTO> getTeacher(@PathVariable int id) {
+        Optional<TeacherResponseDTO> teacher = teacherServices.findById(id);
 
         return ResponseEntity.of(teacher);
     }
 
     @GetMapping("/teachers")
-    public List<Teacher> getAllTeachers() {
-        List<Teacher> teachers = teacherRepository.findAll();
+    public List<TeacherResponseDTO> getAllTeachers() {
+        List<TeacherResponseDTO> teachers = teacherServices.findAll();
 
         return teachers;
     }
 
     @PostMapping("/teachers")
-    public Teacher createTeacher(@RequestBody Teacher teacher) {
-        return teacherRepository.save(teacher);
+    public TeacherResponseDTO createTeacher(@RequestBody TeacherRequestDTO dto) {
+        return teacherServices.save(dto);
     }
 
     @PutMapping("/teachers/{id}")
-    public ResponseEntity<Teacher> updateTeacher(@PathVariable int id, @RequestBody Teacher teacher) {
-        Optional<Teacher> original = teacherRepository.findById(id);
-
-        if(original.isPresent()) {
-            Teacher originalTeacher = original.get();
-            originalTeacher.copyFrom(teacher);
-
-            Teacher updatedTeacher = teacherRepository.save(originalTeacher);
-            return ResponseEntity.ok().body(updatedTeacher);
-        } else {
-            Teacher newTeacher = new Teacher();
-            newTeacher.copyFrom(teacher);
-
-            Teacher savedTeacher = teacherRepository.save(newTeacher);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedTeacher);
-        }
+    public ResponseEntity<TeacherResponseDTO> updateTeacher(@PathVariable int id, @RequestBody TeacherRequestDTO dto) {
+        return ResponseEntity.of(teacherServices.updateIfExists(id, dto));
     }
 
     @DeleteMapping("/teachers/{id}")
-    public ResponseEntity<Teacher> deleteTeacher(@PathVariable int id) {
-        Optional<Teacher> teacherToDelete = teacherRepository.findById(id);
-        teacherRepository.deleteById(id);
-        return ResponseEntity.of(teacherToDelete);
+    public ResponseEntity<TeacherResponseDTO> deleteTeacher(@PathVariable int id) {
+        return ResponseEntity.of(teacherServices.deleteById(id));
     }
 
 }
