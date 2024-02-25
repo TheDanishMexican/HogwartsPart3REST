@@ -3,3 +3,11 @@
 CI/CD Pipeline setup thru github.
 
 The database server and the web app are both hosted on Azure.
+
+URL for the web app is : https://hogwartsadminsystem.azurewebsites.net
+
+To view data add one of below to the URL:
+  /students
+  /houses
+  /teachers
+
